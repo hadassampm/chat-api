@@ -28,4 +28,11 @@ app.use("/entrar",router.post("/entrar", async(req, res, next) => {
     res.status(200).send(resp);
 }));
 
+app.use("/sala/mensagem/", router.post("/sala/mensagem", async (req, res) => {
+    if(!token.checkToken(req.headers.token,req.headers.iduser,req.headers.nick))
+        return false;
+    let resp = await salaController.enviaMensagem(req.headers.nick,req.body.msg,req.body.idSala);
+     res.status(200).send(resp);
+}))
+
 module.exports = app;
