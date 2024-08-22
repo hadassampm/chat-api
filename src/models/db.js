@@ -32,4 +32,4 @@ let updateOne = async (collection, object, param) => {
     return result;
 }
 
-module.exports = { findAll };
+module.exports = { findAll, findOne, updateOne};
