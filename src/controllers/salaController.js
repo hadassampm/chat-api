@@ -4,7 +4,11 @@ exports.get = async function () {
   //return[{nome: "info632A"}, {nome: "info632B"}];
 }
 
-exports.entrar = async (iduser, idsalaa) => {
+exports.get = async (req, res)=> {
+  return await salaModel.listarSalas();
+}
+
+exports.entrar = async (iduser, idsala) => {
   const sala = await salaModel.buscarSala(idsala);
   let usuarioModel = require ('../models/usuarioModel');
   let user = await usuarioModel.buscarUsuario(iduser);
@@ -15,7 +19,7 @@ exports.entrar = async (iduser, idsalaa) => {
   return false;
 }
 
-exports.enviaMensagem = async (nick, msg, idsala) => {
+exports.enviarMensagem = async (nick, msg, idsala) => {
   const sala = await salaModel.buscarSala(idsala);
   if(!sala.msgs){
     sala.msgs = [];
@@ -23,7 +27,19 @@ exports.enviaMensagem = async (nick, msg, idsala) => {
   timestamp = Date.now()
   sala.msgs.push(
     {
-      
+      timestamp:timestamp,
+      msg:msg,
+      nick:nick
     }
   )
+  let resp = await salaModel.atualizarMensagens(sala);
+  return {"msg":"OK", "timestamp":timestamp};
+}
+
+exports.buscarMensagens = async (idsala, timestamp) => {
+  let mensagens = await salaModel.buscarMensagens(idsala, timestamp);
+  return {
+    "timestamp": mensagens[mensagens.length - 1].timestamp,
+    "msgs":mensagens
+  };
 }
