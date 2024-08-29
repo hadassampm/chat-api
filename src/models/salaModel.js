@@ -1,7 +1,7 @@
 const { Timestamp } = require("mongodb");
 const db = require ("./db");
 
-async function listarSalas (){
+async function listarSalas(){
     return await db.findAll("salas");
 }
 

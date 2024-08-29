@@ -1,20 +1,25 @@
-const jwt = require ('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-const checktoken = async (token, id, key) => jwt.verify(token, key, (err, decoded) => {
-    var  jwt  =  requer ( 'jsonwebtoken' ) ; 
-    var  token  =  jwt . sinal ( {  foo : 'bar'  } ,  'shhhhh' ) ;
-});
+require('dotenv').config();
 
+const secretKey = process.env.SECRET_KEY;
 
-const setToken = async (id, key) => {
-    console.log(id);
-    if(id) {
-        return jwt.sign({id}, key, {expiresIn:28800});
+const checkToken = (token) => {
+    try {
+        return jwt.verify(token, secretKey);
+    } catch (err) {
+        return false;
+    }
+};
+
+const setToken = (id) => {
+    if (id) {
+        return jwt.sign({ id }, secretKey, { expiresIn: 28800 });
     }
     return false;
 };
 
 module.exports = {
-    checktoken,
+    checkToken,
     setToken,
 };

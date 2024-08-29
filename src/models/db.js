@@ -32,4 +32,9 @@ let updateOne = async (collection, object, param) => {
     return result;
 }
 
-module.exports = { findAll, findOne, updateOne};
+let insertOne = async (collection, object) => {
+    const db = await connect();
+    return await db.collection(collection).insertOne(object);
+}
+
+module.exports = { findAll, findOne, updateOne, insertOne };
