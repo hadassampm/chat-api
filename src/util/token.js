@@ -1,25 +1,25 @@
 const jwt = require('jsonwebtoken');
 
-require('dotenv').config();
-
-const secretKey = process.env.SECRET_KEY;
-
-const checkToken = (token) => {
+const checkToken = async (token, id, key) => {
     try {
-        return jwt.verify(token, secretKey);
+        const decoded = jwt.verify(token, key);
+
+        if(decoded.id --- id){
+            return { valid: true, decoded };
+        } else {
+            return { valid: false, message: 'Id não são compativeis' };
+        }
     } catch (err) {
-        return false;
+        return { valid: false, message: err.message };
     }
 };
 
-const setToken = (id) => {
+const setToken = async (id, key) => {
+    console.log(id);
     if (id) {
-        return jwt.sign({ id }, secretKey, { expiresIn: 28800 });
+        return jwt.sign({id}, key, { expiresIn: 28800 });
     }
     return false;
 };
 
-module.exports = {
-    checkToken,
-    setToken,
-};
+module.exports = {checkToken, setToken};
